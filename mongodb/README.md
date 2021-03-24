@@ -43,8 +43,21 @@ db.calls.aggregate( [
   }
 ] )
 
-# Trouver le top 3 des villes avec le plus d'appels pour overdose
+# Trouver les 3 mois ayant comptabilisés le plus d'appels
 
+db.calls.aggregate([
+   { "$group": {
+       "_id": {
+           "year": { "$substr": [ "$timestamp", 0, 4 ] },
+           "month": { "$substr": [ "$timestamp", 5, 2 ] }
+       },
+       "count": { "$sum": 1 }
+   }},
+  { $sort: { "count": -1 } },
+  { $limit: 3 }
+])
+
+# Trouver le top 3 des villes avec le plus d'appels pour overdose
 
 db.calls.aggregate( [ 
   { $match: { $text: { $search: "overdose" } } },
