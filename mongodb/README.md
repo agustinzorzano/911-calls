@@ -66,6 +66,23 @@ db.calls.aggregate( [
   { $limit: 3 }
 ] )
 
+# Compter le nombre d'appels autour de Lansdale dans un rayon de 500 mètres
+
+db.calls.find(  
+    { 
+        "location" : {
+            $near: { 
+                $geometry: {
+                    type: "Point" ,
+                    coordinates: [ -75.283783 , 40.241493 ]
+                },
+                $maxDistance: 500,
+                $minDistance: 0
+           }
+        }
+    }
+).count()
+
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
