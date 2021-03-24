@@ -32,7 +32,27 @@ Afin de répondre aux différents problèmes, vous allez avoir besoin de créer 
 À vous de jouer ! Écrivez les requêtes MongoDB permettant de résoudre les problèmes posés.
 
 ```
-TODO : ajouter les requêtes MongoDB ici
+# Compter le nombre d'appels par catégorie
+
+db.calls.aggregate( [
+  {
+    $group: {
+       _id: "$category",
+       count: { $sum: 1 }
+    }
+  }
+] )
+
+# Trouver le top 3 des villes avec le plus d'appels pour overdose
+
+
+db.calls.aggregate( [ 
+  { $match: { $text: { $search: "overdose" } } },
+  { $group: { _id: "$neighborhood", count: { $sum: 1 } } },
+  { $sort: { "count": -1 } },
+  { $limit: 3 }
+] )
+
 ```
 
 Vous allez sûrement avoir besoin de vous inspirer des points suivants de la documentation :
